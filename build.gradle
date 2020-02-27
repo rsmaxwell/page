@@ -27,6 +27,7 @@ ext {
     }
             
     mainName = "pages"
+    testName = "test-pages"
 
     groupID = 'com.rsmaxwell.diary'
     artifactID = "${mainName}-${GOARCH}-${GOOS}"
