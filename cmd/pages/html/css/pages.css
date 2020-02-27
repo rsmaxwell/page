@@ -1,0 +1,52 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+.imgbox {
+  display: grid;
+  height: 100%;
+}
+.center-fit {
+  max-width: 100%;
+  max-height: 100vh;
+  margin: auto;
+}
+
+.top-center {
+  position: absolute;
+  top: 8px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  opacity: 0;
+}
+
+.top-center:hover {
+  opacity: 1.0;
+}
+
+.center-right {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);  
+  opacity: 0;
+}
+
+.center-right:hover {
+  opacity: 1.0;
+}
+
+.center-left {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+.center-left:hover {
+  opacity: 1.0;
+}
