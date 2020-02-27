@@ -34,7 +34,8 @@ ext {
     packaging = "zip"
     classifier = "test"
 
-    myVersion = System.getenv("BUILD_ID") ?: "SNAPSHOT"
+    buildID = System.getenv("BUILD_ID") ?: "SNAPSHOT"
+    myVersion = "0.0.${buildID}"
 }
 
 task generate {
