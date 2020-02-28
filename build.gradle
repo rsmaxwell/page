@@ -27,12 +27,12 @@ ext {
     }
             
     mainName = "pages"
-    testName = "test-pages"
+    internalTestName = "internalTest-pages"
 
     groupID = 'com.rsmaxwell.diary'
     artifactID = "${mainName}-${GOARCH}-${GOOS}"
     packaging = "zip"
-    classifier = "test"
+    classifier = "internalTest"
 
     buildID = System.getenv("BUILD_ID") ?: "SNAPSHOT"
     myVersion = "0.0.${buildID}"
@@ -97,7 +97,7 @@ task clean() {
 
 task zip {
     dependsOn('zipMain')
-    dependsOn('zipTest')
+    dependsOn('zipInternalTest')
 }
 
 task zipMain(type: Zip) {
@@ -109,12 +109,12 @@ task zipMain(type: Zip) {
     destinationDir(file('./build'))
 }
 
-task zipTest(type: Zip) {
+task zipInternalTest(type: Zip) {
     from('build') {
-        include "${testName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}"
+        include "${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}"
         include 'version.json'
     }
-    archiveName "${testName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}"
+    archiveName "${internalTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}"
     destinationDir(file('./build'))
 }
 
@@ -128,7 +128,7 @@ publishing {
             version myVersion
 
             artifact("./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") 
-            artifact("./build/${testName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") {
+            artifact("./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") {
                     classifier = project.ext.classifier
             }
         }
