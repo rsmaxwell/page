@@ -79,7 +79,7 @@ task build()  {
             commandLine 'go', 'build', '-o', "./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${mainName}"
         }
         exec {
-            commandLine 'go', 'build', '-o', "./build/${testName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${testName}"
+            commandLine 'go', 'build', '-o', "./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${internalTestName}"
         }
         exec {
             commandLine 'go', 'test', './...'
