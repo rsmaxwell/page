@@ -59,7 +59,7 @@ func main() {
 
 	files := q["image"]
 	if len(files) < 1 {
-		fmt.Println("ERROR: no files")
+		fmt.Println("ERROR: no files: " + requestURI)
 		os.Exit(1)
 	} else if len(files) > 1 {
 		fmt.Println("ERROR: too many files: " + strings.Join(files, ","))
