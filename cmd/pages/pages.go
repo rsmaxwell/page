@@ -22,7 +22,7 @@ func contains(s []string, e string) bool {
 
 func main() {
 
-	fmt.Println("Content-type: text/html\n")
+	fmt.Printf("Content-type: text/html\n\n")
 
 	prefix := ""
 	value, exists := os.LookupEnv("PREFIX")
