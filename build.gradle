@@ -63,7 +63,8 @@ task writeVersionJSON {
     onlyIf { System.env.BUILD_ID != null }
     doLast {
         def data = [
-            version:      System.env.BUILD_ID,
+            version:      System.env.myVersion,
+            build_id:     System.env.BUILD_ID,
             buildDate:    TIMESTAMP,
             gitCommit:    System.env.GIT_COMMIT,
             gitBranch:    System.env.GIT_BRANCH,
