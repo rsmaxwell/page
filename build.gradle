@@ -26,7 +26,7 @@ ext {
         GOARCH = os.toString().trim()
     }
             
-    mainName = "pages"
+    mainName = "page"
     internalTestName = "internalTest"
     stagingTestName = "stagingTest"
     releasesTestName = "releasesTest"
@@ -82,16 +82,16 @@ task writeVersionJSON {
 task build()  {
     doLast {
         exec {
-            commandLine 'go', 'build', '-o', "./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${mainName}"
+            commandLine 'go', 'build', '-o', "./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${mainName}"
         }
         exec {
-            commandLine 'go', 'build', '-o', "./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${internalTestName}"
+            commandLine 'go', 'build', '-o', "./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${internalTestName}"
         }
         exec {
-            commandLine 'go', 'build', '-o', "./build/${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${stagingTestName}"
+            commandLine 'go', 'build', '-o', "./build/${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${stagingTestName}"
         }
         exec {
-            commandLine 'go', 'build', '-o', "./build/${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/pages/cmd/${releasesTestName}"
+            commandLine 'go', 'build', '-o', "./build/${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${releasesTestName}"
         }
         exec {
             commandLine 'go', 'test', './...'
