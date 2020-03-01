@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/rsmaxwell/page/internal/basic/version"
+	"github.com/rsmaxwell/page/internal/config"
 	"github.com/rsmaxwell/page/internal/myerror"
 )
 
@@ -33,11 +34,7 @@ func main() {
 
 	fmt.Printf("Content-type: text/html\n\n")
 
-	prefix := ""
-	value, exists := os.LookupEnv("PREFIX")
-	if exists {
-		prefix = value
-	}
+	config := config.New()
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
@@ -76,14 +73,15 @@ func main() {
 	}
 
 	filename := files[0]
+	pathname := filepath.Join(config.Prefix, filename)
 
-	_, err = os.Stat(prefix + filename)
+	_, err = os.Stat(config.Prefix + filename)
 	if err != nil {
-		myerror.New("could not stat file: " + prefix + filename).Add("prefix: " + prefix).Add("filename: " + filename).Handle()
+		myerror.New("could not stat file: " + pathname).Add("prefix: " + config.Prefix).Add("filename: " + filename).Handle()
 		os.Exit(1)
 	}
 
-	prefixDirectory := filepath.Dir(prefix + filename)
+	prefixDirectory := filepath.Dir(pathname)
 	directory := strings.ReplaceAll(filepath.Dir(filename), "\\", "/")
 
 	children, err := ioutil.ReadDir(prefixDirectory)

@@ -3,6 +3,7 @@ package myerror
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"runtime"
 
 	"github.com/rsmaxwell/page/internal/basic/version"
@@ -26,6 +27,10 @@ func New(line string) MyError {
 	e.lines = append(e.lines, fmt.Sprintf("File:Line: %s:%d", fn, linenumber))
 
 	e.lines = append(e.lines, "Version: "+version.Version())
+
+	user, _ := user.Current()
+	e.lines = append(e.lines, "Username: "+user.Username)
+	e.lines = append(e.lines, "HomeDir: "+user.HomeDir)
 
 	dir, _ := os.Getwd()
 	e.lines = append(e.lines, "Current Working Directory: "+dir)
