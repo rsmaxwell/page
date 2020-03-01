@@ -79,7 +79,7 @@ func main() {
 
 	_, err = os.Stat(prefix + filename)
 	if err != nil {
-		myerror.New("could not stat file: " + filename).Handle()
+		myerror.New("could not stat file: " + prefix + filename).Add("prefix: " + prefix).Add("filename: " + filename).Handle()
 		os.Exit(1)
 	}
 
