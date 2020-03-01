@@ -17,7 +17,8 @@ type Config struct {
 
 // Debug structure
 type Debug struct {
-	File                 string         `json:"file"`
+	Directory            string         `json:"directory"`
+	Filename             string         `json:"filename"`
 	Level                int            `json:"level"`
 	DefaultPackageLevel  int            `json:"defaultPackageLevel"`
 	DefaultFunctionLevel int            `json:"defaultFunctionLevel"`
@@ -31,7 +32,7 @@ func New() *Config {
 	c := new(Config)
 
 	c.Prefix = "/var/www/"
-	c.Debug.File = "/tmp/page.log"
+	c.Debug.Filename = "/tmp/page.log"
 	c.Debug.Level = 30
 	c.Debug.DefaultPackageLevel = 30
 	c.Debug.DefaultFunctionLevel = 30

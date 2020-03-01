@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"runtime/debug"
@@ -78,9 +79,11 @@ func Open(c config.Debug) {
 	packageLevels = c.PackageLevels
 
 	os.MkdirAll(dumpRoot, 0755)
+	os.MkdirAll(c.Directory, 0755)
 
 	var err error
-	file, err = os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	filename := filepath.Join(c.Directory, c.Filename)
+	file, err = os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
 	}
