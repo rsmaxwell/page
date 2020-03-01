@@ -6,7 +6,7 @@ import (
 	"os/user"
 	"runtime"
 
-	"github.com/rsmaxwell/page/internal/basic/version"
+	"github.com/rsmaxwell/page/internal/version"
 )
 
 // MyError is the error structure
