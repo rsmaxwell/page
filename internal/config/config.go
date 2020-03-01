@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime"
 
 	"github.com/rsmaxwell/page/internal/file"
 )
@@ -32,7 +33,8 @@ func New() *Config {
 	c := new(Config)
 
 	c.Prefix = "/var/www/"
-	c.Debug.Filename = "/tmp/page.log"
+	c.Debug.Directory = "/tmp"
+	c.Debug.Filename = "page.log"
 	c.Debug.Level = 30
 	c.Debug.DefaultPackageLevel = 30
 	c.Debug.DefaultFunctionLevel = 30
@@ -41,6 +43,13 @@ func New() *Config {
 	c.Debug.PackageLevels = make(map[string]int)
 
 	filename := "/etc/page/page.json"
+
+	if runtime.GOOS == "windows" {
+		c.Prefix = "C:/temp"
+		c.Debug.Directory = "C:/temp"
+		c.Debug.DumpDir = "C:/temp"
+	}
+
 	if file.Exists(filename) {
 		jsonFile, err := os.Open(filename)
 		if err != nil {
