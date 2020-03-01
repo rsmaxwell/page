@@ -22,7 +22,8 @@ func New(line string) MyError {
 	e.lines = append(e.lines, "page")
 
 	pc, fn, linenumber, _ := runtime.Caller(1)
-	e.lines = append(e.lines, fmt.Sprintf("%s[%s:%d]", runtime.FuncForPC(pc).Name(), fn, linenumber))
+	e.lines = append(e.lines, fmt.Sprintf("Function: %s", runtime.FuncForPC(pc).Name()))
+	e.lines = append(e.lines, fmt.Sprintf("File:Line: %s:%d", fn, linenumber))
 
 	e.lines = append(e.lines, "Version: "+version.Version())
 
