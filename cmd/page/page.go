@@ -3,16 +3,20 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/rsmaxwell/page/internal/basic/version"
 	"github.com/rsmaxwell/page/internal/config"
-	"github.com/rsmaxwell/page/internal/myerror"
+	"github.com/rsmaxwell/page/internal/debug"
+	"github.com/rsmaxwell/page/internal/version"
+)
+
+var (
+	pkg          = debug.NewPackage("main")
+	functionMain = debug.NewFunction(pkg, "main")
 )
 
 func contains(s []string, e string) bool {
@@ -31,21 +35,21 @@ func error() {
 }
 
 func main() {
+	f := functionMain
 
 	fmt.Printf("Content-type: text/html\n\n")
 
 	config := config.New()
+	debug.Initialize(config.Debug)
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
-		myerror.New("environment variable 'REQUEST_URI' not found").Handle()
-		os.Exit(1)
+		f.Fatalf("environment variable 'REQUEST_URI' not found")
 	}
 
 	u, err := url.Parse(requestURI)
 	if err != nil {
-		myerror.New(err.Error()).Add("could not parse REQUEST_URI: " + requestURI).Handle()
-		os.Exit(1)
+		f.Fatalf("could not parse REQUEST_URI: " + requestURI)
 	}
 
 	q := u.Query()
@@ -61,32 +65,30 @@ func main() {
 			zoom = value
 		}
 	} else {
-		myerror.New("too many zooms: " + strings.Join(zooms, ",")).Handle()
+		f.Fatalf("too many zooms: " + strings.Join(zooms, ","))
 	}
 
 	files := q["image"]
 	if len(files) < 1 {
-		myerror.New("no files: " + requestURI).Handle()
+		f.Fatalf("no files: " + requestURI)
 		os.Exit(1)
 	} else if len(files) > 1 {
-		myerror.New("too many files: " + strings.Join(files, ",")).Handle()
+		f.Fatalf("too many files: " + strings.Join(files, ","))
 	}
 
 	filename := files[0]
-	pathname := filepath.Join(config.Prefix, filename)
 
-	_, err = os.Stat(pathname)
+	imagefile := filepath.Join(config.Prefix, filename)
+	_, err = os.Stat(imagefile)
 	if err != nil {
-		myerror.New("could not stat file: " + pathname).Add("prefix: " + config.Prefix).Add("filename: " + filename).Handle()
-		os.Exit(1)
+		f.Fatalf("could not stat file: " + imagefile + ", prefix: " + config.Prefix + ", filename: " + filename)
 	}
 
-	prefixDirectory := filepath.Dir(pathname)
-	directory := strings.ReplaceAll(filepath.Dir(filename), "\\", "/")
+	prefixDirectory := filepath.Dir(imagefile)
 
 	children, err := ioutil.ReadDir(prefixDirectory)
 	if err != nil {
-		log.Fatal(err)
+		f.Fatalf(err.Error())
 	}
 
 	// list the files with the same parent, sorted by name
@@ -111,15 +113,15 @@ func main() {
 	}
 
 	if found < 0 {
-		myerror.New("file not found: " + filename).Handle()
-		os.Exit(1)
+		f.Fatalf("file not found: " + filename)
 	}
 
 	previousButton := ""
 	if found > 0 {
 		prev := filelist[found-1]
+		previousFile := filepath.Join(config.Prefix, prev.Name())
 		previousButton = " <div class=\"center-left\">" +
-			"<a href=\"" + directory + "/" + prev.Name() + "\">" +
+			"<a href=\"" + previousFile + "\">" +
 			"<img src=\"images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
@@ -128,8 +130,9 @@ func main() {
 	nextButton := ""
 	if found < len(filelist) {
 		next := filelist[found+1]
+		nextFile := filepath.Join(config.Prefix, next.Name())
 		nextButton = " <div class=\"center-right\">" +
-			"<a href=\"" + directory + "/" + next.Name() + "\">" +
+			"<a href=\"" + nextFile + "\">" +
 			"<img src=\"images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
@@ -139,10 +142,10 @@ func main() {
 	image := ""
 	if zoom == "scale" {
 		zoomButton = " <div class=\"top-center\"><img src=\"images/minus.png\"></div> \n"
-		image = " <img src=\"" + filename + "\" class=\"center-fit\" > \n"
+		image = " <img src=\"" + imagefile + "\" class=\"center-fit\" > \n"
 	} else {
 		zoomButton = " <div class=\"top-center\"><img src=\"images/plus.png\"></div> \n"
-		image = " <img src=\"" + filename + "\" class=\"center-fit\" > \n"
+		image = " <img src=\"" + imagefile + "\" class=\"center-fit\" > \n"
 	}
 
 	// Write out the html
