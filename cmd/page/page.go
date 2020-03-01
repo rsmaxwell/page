@@ -75,7 +75,7 @@ func main() {
 	filename := files[0]
 	pathname := filepath.Join(config.Prefix, filename)
 
-	_, err = os.Stat(config.Prefix + filename)
+	_, err = os.Stat(pathname)
 	if err != nil {
 		myerror.New("could not stat file: " + pathname).Add("prefix: " + config.Prefix).Add("filename: " + filename).Handle()
 		os.Exit(1)
