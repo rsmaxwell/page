@@ -5,20 +5,24 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/rsmaxwell/page/internal/file"
 )
 
-// Config is the Config structure
+// Config structure
 type Config struct {
 	Prefix string `json:"prefix"`
+	Debug  Debug  `json:"debug"`
 }
 
-// fileExists checks if a file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
+// Debug structure
+type Debug struct {
+	Level                int            `json:"level"`
+	DefaultPackageLevel  int            `json:"defaultPackageLevel"`
+	DefaultFunctionLevel int            `json:"defaultFunctionLevel"`
+	DumpDir              string         `json:"dumpDir"`
+	FunctionLevels       map[string]int `json:"functionLevels"`
+	PackageLevels        map[string]int `json:"packageLevels"`
 }
 
 // New creates a config object
@@ -26,7 +30,7 @@ func New() *Config {
 	c := new(Config)
 
 	filename := "/etc/page/page.json"
-	if fileExists(filename) {
+	if file.Exists(filename) {
 		jsonFile, err := os.Open(filename)
 		if err != nil {
 			fmt.Println(err)
