@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/rsmaxwell/page/internal/basic/version"
+	"github.com/rsmaxwell/page/internal/myerror"
 )
 
 func contains(s []string, e string) bool {
@@ -40,16 +41,13 @@ func main() {
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
-		error()
-		fmt.Println("<p>ERROR: environment variable 'REQUEST_URI' not found</p>")
+		myerror.New("environment variable 'REQUEST_URI' not found").Handle()
 		os.Exit(1)
 	}
 
 	u, err := url.Parse(requestURI)
 	if err != nil {
-		error()
-		fmt.Println("<p>" + err.Error() + "</p>")
-		fmt.Println("<p>ERROR: could not parse REQUEST_URI: " + requestURI + "</p>")
+		myerror.New(err.Error()).Add("could not parse REQUEST_URI: " + requestURI).Handle()
 		os.Exit(1)
 	}
 
@@ -66,26 +64,22 @@ func main() {
 			zoom = value
 		}
 	} else {
-		error()
-		fmt.Println("<p>ERROR: too many zooms: " + strings.Join(zooms, ",") + "</p>")
+		myerror.New("too many zooms: " + strings.Join(zooms, ",")).Handle()
 	}
 
 	files := q["image"]
 	if len(files) < 1 {
-		error()
-		fmt.Println("<p>ERROR: no files: " + requestURI + "</p>")
+		myerror.New("no files: " + requestURI).Handle()
 		os.Exit(1)
 	} else if len(files) > 1 {
-		error()
-		fmt.Println("<p>ERROR: too many files: " + strings.Join(files, ",") + "</p>")
+		myerror.New("too many files: " + strings.Join(files, ",")).Handle()
 	}
 
 	filename := files[0]
 
 	_, err = os.Stat(prefix + filename)
 	if err != nil {
-		error()
-		fmt.Println("<p>ERROR: could not stat file: " + filename + "</p>")
+		myerror.New("could not stat file: " + filename).Handle()
 		os.Exit(1)
 	}
 
@@ -119,8 +113,7 @@ func main() {
 	}
 
 	if found < 0 {
-		error()
-		fmt.Println("<p>ERROR: file not found: " + filename + "</p>")
+		myerror.New("file not found: " + filename).Handle()
 		os.Exit(1)
 	}
 
