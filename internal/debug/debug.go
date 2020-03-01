@@ -58,7 +58,7 @@ const (
 
 var (
 	file                 *os.File
-	logger               log.Logger
+	logger               *log.Logger
 	level                int
 	defaultPackageLevel  int
 	defaultFunctionLevel int
@@ -84,7 +84,7 @@ func Open(c config.Debug) {
 	if err != nil {
 		log.Println(err)
 	}
-	logger := log.New(file, "page", log.LstdFlags)
+	logger = log.New(file, "page", log.LstdFlags)
 }
 
 // Close function
