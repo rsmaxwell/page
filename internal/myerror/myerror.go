@@ -3,6 +3,7 @@ package myerror
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/rsmaxwell/page/internal/basic/version"
 )
@@ -18,8 +19,14 @@ func New(line string) MyError {
 	l := make([]string, 3)
 	e.lines = l
 
+	e.lines = append(e.lines, "page")
+
+	pc, fn, line, _ := runtime.Caller(1)
+	e.lines = append(e.lines, "[error] in %s[%s:%d] %v", runtime.FuncForPC(pc).Name(), fn, line, err)
+
+	e.lines = append(e.lines, "Version: "+version.Version())
+
 	dir, _ := os.Getwd()
-	e.lines = append(e.lines, "page, version: "+version.Version())
 	e.lines = append(e.lines, "Current Working Directory: "+dir)
 
 	return e.Add(line)
