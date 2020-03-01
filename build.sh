@@ -1,9 +1,9 @@
 #!/bin/bash
 
 export GOPATH=${WORKSPACE}
-export PROJECT_DIR=${WORKSPACE}/src/github.com/rsmaxwell/pages
+export PROJECT_DIR=${WORKSPACE}/src/github.com/rsmaxwell/page
 
-export PAGES_ROOTDIR=${PROJECT_DIR}/testing/root
+export PAGE_ROOTDIR=${PROJECT_DIR}/testing/root
 export DEBUG_DUMP_DIR=${PROJECT_DIR}/build/dumps
 
 export repoUrl="https://server.rsmaxwell.co.uk/archiva"

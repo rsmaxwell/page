@@ -19,7 +19,7 @@ data.json
 vendor/
 build/
 output/
-cmd/pages/html/pages
+cmd/page/html/pages
 testing/
 .gradle/
 .gogradle/
