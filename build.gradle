@@ -50,6 +50,7 @@ task generate {
 task updateVersionGO {
     onlyIf { System.env.BUILD_ID != null }
     doLast {
+        ant.replace(dir: 'internal', includes: '**/version.go', token: '<VERSION>', value: System.env.myVersion)
         ant.replace(dir: 'internal', includes: '**/version.go', token: '<BUILD_ID>', value: System.env.BUILD_ID)
         ant.replace(dir: 'internal', includes: '**/version.go', token: '<TIMESTAMP>', value: TIMESTAMP)
         ant.replace(dir: 'internal', includes: '**/version.go', token: '<GIT_COMMIT>', value: System.env.GIT_COMMIT)

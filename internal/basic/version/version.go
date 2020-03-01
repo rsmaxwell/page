@@ -2,6 +2,11 @@ package version
 
 // Version function
 func Version() string {
+	return "<VERSION>"
+}
+
+// BuildID function
+func BuildID() string {
 	return "<BUILD_ID>"
 }
 
