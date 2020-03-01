@@ -40,7 +40,10 @@ func main() {
 	fmt.Printf("Content-type: text/html\n\n")
 
 	config := config.New()
-	debug.Initialize(config.Debug)
+	debug.Open(config.Debug)
+	defer debug.Close()
+
+	f.Infof(fmt.Sprintf("config: %v", config))
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {

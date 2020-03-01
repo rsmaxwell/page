@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -56,6 +57,8 @@ const (
 )
 
 var (
+	file                 *os.File
+	logger               log.Logger
 	level                int
 	defaultPackageLevel  int
 	defaultFunctionLevel int
@@ -64,8 +67,8 @@ var (
 	packageLevels        map[string]int
 )
 
-// Initialize function
-func Initialize(c config.Debug) {
+// Open function
+func Open(c config.Debug) {
 	level = c.Level
 	defaultPackageLevel = c.DefaultPackageLevel
 	defaultFunctionLevel = c.DefaultFunctionLevel
@@ -75,6 +78,18 @@ func Initialize(c config.Debug) {
 	packageLevels = c.PackageLevels
 
 	os.MkdirAll(dumpRoot, 0755)
+
+	var err error
+	file, err = os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	logger := log.New(file, "page", log.LstdFlags)
+}
+
+// Close function
+func Close() {
+	file.Close()
 }
 
 // NewPackage function
@@ -170,7 +185,7 @@ func (f *Function) Debug(l int, format string, a ...interface{}) {
 			if l <= f.level {
 				line1 := fmt.Sprintf(format, a...)
 				line2 := fmt.Sprintf("%s.%s %s", f.pkg.name, f.name, line1)
-				fmt.Fprintln(os.Stderr, line2)
+				logger.Printf(line2)
 			}
 		}
 	}
@@ -181,7 +196,7 @@ func (f *Function) Printf(l int, format string, a ...interface{}) {
 	if l <= level {
 		if l <= f.pkg.level {
 			if l <= f.level {
-				fmt.Printf(format, a...)
+				logger.Printf(format, a...)
 			}
 		}
 	}
@@ -192,7 +207,7 @@ func (f *Function) Println(l int, format string, a ...interface{}) {
 	if l <= level {
 		if l <= f.pkg.level {
 			if l <= f.level {
-				fmt.Println(fmt.Sprintf(format, a...))
+				logger.Println(fmt.Sprintf(format, a...))
 			}
 		}
 	}
