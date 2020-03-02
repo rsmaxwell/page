@@ -183,7 +183,7 @@ func main() {
 		"<html> \n" +
 		"<head> \n" +
 		"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> \n" +
-		"<link rel=\"stylesheet\" type=\"text/css\" href=\"/diaries/css/diary.css\"> \n" +
+		"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.DiariesRoot + "/css/diary.css\"> \n" +
 		"</head> \n" +
 		"<body> \n" +
 		"<div class=\"imgbox\"> \n" +
