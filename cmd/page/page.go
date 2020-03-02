@@ -174,14 +174,20 @@ func main() {
 		zoomHTML = "<div class=\"top-center\">" +
 			"<a href=\"" + thisURL + "&zoom=full" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/plus.png\">" +
+			"</a>" +
 			"</div> \n"
 	} else {
 		imageHTML = "<img src=\"" + imageRef + "\" > \n"
 		zoomHTML = "<div class=\"top-center\">" +
 			"<a href=\"" + thisURL + "&zoom=scale" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/minus.png\">" +
+			"</a>" +
 			"</div> \n"
 	}
+
+	fmt.Fprintf(os.Stderr, "thisURL: %s\n", thisURL)
+	fmt.Fprintf(os.Stderr, "imageHTML: %s\n", imageHTML)
+	fmt.Fprintf(os.Stderr, "zoomHTML: %s\n", zoomHTML)
 
 	// Write out the html
 	content := "<!DOCTYPE html> \n" +
