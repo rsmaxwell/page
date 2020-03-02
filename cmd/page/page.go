@@ -155,7 +155,7 @@ func main() {
 		previousURL := cgi + "?diary=" + diary + "&image=" + prev.Name()
 		previousHTML = " <div class=\"center-left\">" +
 			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"images/previous.png\" >" +
+			"<img src=\"" + config.Prefix + "/images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -166,7 +166,7 @@ func main() {
 		nextURL := cgi + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = " <div class=\"center-right\">" +
 			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"images/next.png\" >" +
+			"<img src=\"" + config.Prefix + "/images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
