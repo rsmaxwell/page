@@ -60,10 +60,11 @@ func main() {
 
 	files := q["image"]
 	if len(files) < 1 {
-		fmt.Fprintf(os.Stderr, "no files: "+requestURI+"\n")
+		fmt.Fprintf(os.Stderr, "no 'image' key in requestURI: %s\n", requestURI)
+		fmt.Fprintf(os.Stderr, "q: %+v\n", q)
 		os.Exit(1)
 	} else if len(files) > 1 {
-		fmt.Fprintf(os.Stderr, "too many files: %s\n", strings.Join(files, ","))
+		fmt.Fprintf(os.Stderr, "too many 'image' keys in requestURI: %s\n", strings.Join(files, ","))
 	}
 
 	filename := files[0]
