@@ -135,11 +135,8 @@ func init() {
 	var err error
 	filename := filepath.Join(c.Directory, c.Filename)
 
-	fmt.Println("*** debug: init(1): filename: " + filename)
-
 	file, err = os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("*** debug: init(2): err: " + err.Error())
 		log.Println(err)
 	}
 	logger = log.New(file, "page", log.LstdFlags)
