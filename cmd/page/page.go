@@ -172,10 +172,10 @@ func main() {
 
 	if zoom == "scale" {
 		imageHTML = " <img src=\"" + imageRef + "\" class=\"center-fit\" > \n"
-		zoomHTML = " <div class=\"top-center\"><img src=\"images/minus.png\"></div> \n"
+		zoomHTML = " <div class=\"top-center\"><img src=\"" + config.DiariesRoot + "/controls/minus.png\"></div> \n"
 	} else {
 		imageHTML = " <img src=\"" + imageRef + "\" > \n"
-		zoomHTML = " <div class=\"top-center\"><img src=\"controls/plus.png\"></div> \n"
+		zoomHTML = " <div class=\"top-center\"><img src=\"" + config.DiariesRoot + "/controls/plus.png\"></div> \n"
 	}
 
 	// Write out the html
