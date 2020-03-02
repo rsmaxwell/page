@@ -134,8 +134,12 @@ func init() {
 
 	var err error
 	filename := filepath.Join(c.Directory, c.Filename)
+
+	fmt.Println("*** debug: init(1): filename: " + filename)
+
 	file, err = os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
+		fmt.Println("*** debug: init(2): err: " + err.Error())
 		log.Println(err)
 	}
 	logger = log.New(file, "page", log.LstdFlags)
@@ -253,9 +257,13 @@ func (f *Function) Printf(l int, format string, a ...interface{}) {
 
 // Println prints a debug message
 func (f *Function) Println(l int, format string, a ...interface{}) {
+	fmt.Printf("*** debug(1): Println\n")
 	if l <= level {
+		fmt.Printf("*** debug(2): Println\n")
 		if l <= f.pkg.level {
+			fmt.Printf("*** debug(3): Println\n")
 			if l <= f.level {
+				fmt.Printf("*** debug(4): Println\n")
 				logger.Println(fmt.Sprintf(format, a...))
 			}
 		}
