@@ -257,7 +257,6 @@ func (f *Function) Println(l int, format string, a ...interface{}) {
 	if l <= level {
 		if l <= f.pkg.level {
 			if l <= f.level {
-				fmt.Printf("*** debug(999): Println\n")
 				logger.Println(fmt.Sprintf(format, a...))
 			}
 		}
@@ -371,12 +370,12 @@ func (f *Function) Dump(format string, a ...interface{}) *Dump {
 		return dump
 	}
 
-	// pc, fn, line, ok := runtime.Caller(1)
+	pc, fn, line, _ := runtime.Caller(1)
 	// if ok {
 	// 	fmt.Println(fmt.Sprintf("package.function: %s.%s", f.pkg.name, f.name))
 	// 	fmt.Println(fmt.Sprintf("package.function: %s", runtime.FuncForPC(pc).Name()))
 	// 	fmt.Println(fmt.Sprintf("filename: %s[%d]", fn, line))
-	// }
+	//}
 
 	// *****************************************************************
 	// * Main dump info
