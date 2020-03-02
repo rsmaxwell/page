@@ -55,7 +55,7 @@ func main() {
 		zoom = "scale"
 	} else if len(zooms) == 1 {
 		value := zooms[0]
-		validZooms := []string{"scale", "orig"}
+		validZooms := []string{"scale", "full"}
 		if contains(validZooms, strings.ToLower(value)) {
 			zoom = value
 		}
@@ -80,7 +80,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, "    diary[%d]: %s\n", i, d)
 		}
 	}
-
 	diary := diaries[0]
 
 	files := q["image"]
@@ -96,7 +95,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, "    file[%d]: %s\n", i, f)
 		}
 	}
-
 	filename := files[0]
 
 	imagefile := filepath.Join(config.DocumentRoot, "diaries/pages", diary, filename)
@@ -174,13 +172,13 @@ func main() {
 	if zoom == "scale" {
 		imageHTML = "<img src=\"" + imageRef + "\" class=\"center-fit\" > \n"
 		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "?zoom=full" + "\">" +
+			"<a href=\"" + thisURL + "&zoom=full" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/plus.png\">" +
 			"</div> \n"
 	} else {
 		imageHTML = "<img src=\"" + imageRef + "\" > \n"
 		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "?zoom=scale" + "\">" +
+			"<a href=\"" + thisURL + "&zoom=scale" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/minus.png\">" +
 			"</div> \n"
 	}
