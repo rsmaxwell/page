@@ -257,6 +257,7 @@ func (f *Function) Println(l int, format string, a ...interface{}) {
 	if l <= level {
 		if l <= f.pkg.level {
 			if l <= f.level {
+				fmt.Printf("*** debug(999): Println\n")
 				logger.Println(fmt.Sprintf(format, a...))
 			}
 		}
