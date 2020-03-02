@@ -9,9 +9,10 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/rsmaxwell/page/internal/version"
+
 	"github.com/rsmaxwell/page/internal/config"
 	"github.com/rsmaxwell/page/internal/debug"
-	"github.com/rsmaxwell/page/internal/version"
 )
 
 var (
@@ -28,25 +29,18 @@ func contains(s []string, e string) bool {
 	return false
 }
 
-func error() {
-	dir, _ := os.Getwd()
-	fmt.Printf("<p>page, version: %s</p>\n", version.Version())
-	fmt.Printf("<p>Current Working Directory: %s</p>\n", dir)
-}
-
 func main() {
 	f := functionMain
 
 	fmt.Printf("Content-type: text/html\n\n")
 
 	config := config.New()
-	debug.Open(config.Debug)
-	defer debug.Close()
 
-	f.Infof(fmt.Sprintf("config: %v", config))
+	f.Infof(fmt.Sprintf("---[ page: %s ]------------", version.Version()))
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
+		f.DebugInfo("help! info")
 		f.Fatalf("environment variable 'REQUEST_URI' not found")
 	}
 

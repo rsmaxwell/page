@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rsmaxwell/page/internal/config"
+	"github.com/rsmaxwell/page/internal/myfile"
 	"github.com/rsmaxwell/page/internal/version"
 )
 
@@ -68,8 +68,59 @@ var (
 	packageLevels        map[string]int
 )
 
-// Open function
-func Open(c config.Debug) {
+// Debug structure
+type Debug struct {
+	Directory            string         `json:"directory"`
+	Filename             string         `json:"filename"`
+	Level                int            `json:"level"`
+	DefaultPackageLevel  int            `json:"defaultPackageLevel"`
+	DefaultFunctionLevel int            `json:"defaultFunctionLevel"`
+	DumpDir              string         `json:"dumpDir"`
+	FunctionLevels       map[string]int `json:"functionLevels"`
+	PackageLevels        map[string]int `json:"packageLevels"`
+}
+
+// init function
+func init() {
+
+	c := new(Debug)
+
+	c.Directory = "/tmp"
+	c.Filename = "page.log"
+	c.Level = 30
+	c.DefaultPackageLevel = 30
+	c.DefaultFunctionLevel = 30
+	c.DumpDir = "/tmp"
+	c.FunctionLevels = make(map[string]int)
+	c.PackageLevels = make(map[string]int)
+
+	configfile := "/etc/page/page-debug.json"
+
+	if runtime.GOOS == "windows" {
+		c.Directory = "C:/temp"
+		c.DumpDir = "C:/temp"
+		configfile = "C:/temp/page-debug.json"
+	}
+
+	value, ok := os.LookupEnv("PAGE_DEBUG_CONFIGFILE")
+	if ok {
+		configfile = value
+	}
+
+	if myfile.Exists(configfile) {
+		jsonFile, err := os.Open(configfile)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer jsonFile.Close()
+
+		byteValue, err := ioutil.ReadAll(jsonFile)
+		if err != nil {
+			fmt.Println(err)
+		}
+		json.Unmarshal(byteValue, c)
+	}
+
 	level = c.Level
 	defaultPackageLevel = c.DefaultPackageLevel
 	defaultFunctionLevel = c.DefaultFunctionLevel
@@ -88,11 +139,6 @@ func Open(c config.Debug) {
 		log.Println(err)
 	}
 	logger = log.New(file, "page", log.LstdFlags)
-}
-
-// Close function
-func Close() {
-	file.Close()
 }
 
 // NewPackage function
@@ -177,7 +223,7 @@ func (f *Function) Verbosef(format string, a ...interface{}) {
 
 // Fatalf prints a 'fatal' message
 func (f *Function) Fatalf(format string, a ...interface{}) {
-	f.Debug(ErrorLevel, format, a...)
+	f.Dump(format, a...)
 	os.Exit(1)
 }
 
@@ -316,7 +362,7 @@ func (f *Function) Dump(format string, a ...interface{}) *Dump {
 	now := fmt.Sprintf(t.Format("2006-01-02_15-04-05.999999999"))
 	dump.directory = dumpRoot + "/" + now
 
-	f.DebugError("DUMP: writing dump:[%s]", dump.directory)
+	f.DebugError("DUMP: writing dump: %s", dump.directory)
 	err := os.MkdirAll(dump.directory, 0755)
 	if err != nil {
 		dump.err = err
