@@ -45,8 +45,8 @@ func main() {
 	q := u.Query()
 	if len(q) < 1 {
 		fmt.Fprintf(os.Stderr, "requestURI had empty query\n")
-		fmt.Fprintf(os.Stderr, "requestURI: %s\n", requestURI)
-		fmt.Fprintf(os.Stderr, "query: %+v\n", q)
+		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
+		fmt.Fprintf(os.Stderr, "    query: %+v\n", q)
 	}
 
 	zooms := q["zoom"]
@@ -60,16 +60,25 @@ func main() {
 			zoom = value
 		}
 	} else {
-		fmt.Fprintf(os.Stderr, "too many zooms: %s\n", strings.Join(zooms, ","))
+		fmt.Fprintf(os.Stderr, "too many 'zooms' keys in requestURI\n")
+		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
+		for i, z := range zooms {
+			fmt.Fprintf(os.Stderr, "    zoom[%d]: %s\n", i, z)
+		}
 	}
 
 	files := q["image"]
 	if len(files) < 1 {
-		fmt.Fprintf(os.Stderr, "no 'image' key in requestURI: %s\n", requestURI)
-		fmt.Fprintf(os.Stderr, "q: %+v\n", q)
+		fmt.Fprintf(os.Stderr, "Missing 'image' key in requestURI query\n")
+		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
+		fmt.Fprintf(os.Stderr, "    q: %+v\n", q)
 		os.Exit(1)
 	} else if len(files) > 1 {
-		fmt.Fprintf(os.Stderr, "too many 'image' keys in requestURI: %s\n", strings.Join(files, ","))
+		fmt.Fprintf(os.Stderr, "too many 'image' keys in requestURI\n")
+		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
+		for i, f := range files {
+			fmt.Fprintf(os.Stderr, "    file[%d]: %s\n", i, f)
+		}
 	}
 
 	filename := files[0]
@@ -77,7 +86,10 @@ func main() {
 	imagefile := filepath.Join(config.Prefix, filename)
 	_, err = os.Stat(imagefile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not stat file: %s, prefix: %s, filename: %s", imagefile, config.Prefix, filename)
+		fmt.Fprintf(os.Stderr, "Could not stat image file\n")
+		fmt.Fprintf(os.Stderr, "    image file: %s\n", imagefile)
+		fmt.Fprintf(os.Stderr, "    config.Prefix: %s\n", config.Prefix)
+		fmt.Fprintf(os.Stderr, "    filename: %s\n", filename)
 	}
 
 	prefixDirectory := filepath.Dir(imagefile)
