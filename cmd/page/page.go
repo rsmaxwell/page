@@ -43,6 +43,11 @@ func main() {
 	}
 
 	q := u.Query()
+	if len(q) < 1 {
+		fmt.Fprintf(os.Stderr, "requestURI had empty query\n")
+		fmt.Fprintf(os.Stderr, "requestURI: %s\n", requestURI)
+		fmt.Fprintf(os.Stderr, "query: %+v\n", q)
+	}
 
 	zooms := q["zoom"]
 	zoom := "scale"
