@@ -143,19 +143,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "file not found: %s\n", filename)
 	}
 
-	cgi := config.DocumentRoot + "/diaries/pages/page"
-	_, err = os.Stat(cgi)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not stat cgi file: %s\n", cgi)
-	}
-
 	previousHTML := ""
 	if foundIndex > 0 {
 		prev := filelist[foundIndex-1]
-		previousURL := cgi + "?diary=" + diary + "&image=" + prev.Name()
+		previousURL := config.CgiProgram + "?diary=" + diary + "&image=" + prev.Name()
 		previousHTML = " <div class=\"center-left\">" +
 			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"/diaries/images/previous.png\" >" +
+			"<img src=\"" + config.DiariesRoot + "/images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -163,22 +157,25 @@ func main() {
 	nextHTML := ""
 	if foundIndex < len(filelist) {
 		next := filelist[foundIndex+1]
-		nextURL := cgi + "?diary=" + diary + "&image=" + next.Name()
+		nextURL := config.CgiProgram + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = " <div class=\"center-right\">" +
 			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"/diaries/images/next.png\" >" +
+			"<img src=\"" + config.DiariesRoot + "/images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
 
-	zoomHTML := ""
-	image := ""
+	imageRef := config.DiariesRoot + "/pages/" + diary + "/" + filename
+
+	var imageHTML string
+	var zoomHTML string
+
 	if zoom == "scale" {
+		imageHTML = " <img src=\"" + imageRef + "\" class=\"center-fit\" > \n"
 		zoomHTML = " <div class=\"top-center\"><img src=\"images/minus.png\"></div> \n"
-		image = " <img src=\"" + imagefile + "\" class=\"center-fit\" > \n"
 	} else {
+		imageHTML = " <img src=\"" + imageRef + "\" > \n"
 		zoomHTML = " <div class=\"top-center\"><img src=\"images/plus.png\"></div> \n"
-		image = " <img src=\"" + imagefile + "\" > \n"
 	}
 
 	// Write out the html
@@ -190,7 +187,7 @@ func main() {
 		"</head> \n" +
 		"<body> \n" +
 		"<div class=\"imgbox\"> \n" +
-		image +
+		imageHTML +
 		previousHTML +
 		zoomHTML +
 		nextHTML +

@@ -13,6 +13,7 @@ import (
 // Config structure
 type Config struct {
 	DocumentRoot string `json:"documentRoot"`
+	DiariesRoot  string `json:"diariesRoot"`
 	CgiProgram   string `json:"cgiProgram"`
 }
 
