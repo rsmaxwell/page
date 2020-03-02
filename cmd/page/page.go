@@ -28,7 +28,7 @@ func main() {
 	fmt.Printf("Content-type: text/html\n\n")
 
 	config := config.New()
-	fmt.Fprintf(os.Stderr, "config.Prefix:"+config.Prefix+"\n")
+	fmt.Fprintf(os.Stderr, "config.DocumentRoot:"+config.DocumentRoot+"\n")
 
 	fmt.Fprintf(os.Stderr, "---[ page: %s ]------------\n", version.Version())
 
@@ -100,19 +100,20 @@ func main() {
 
 	filename := files[0]
 
-	imagefile := filepath.Join(config.Prefix, diary, filename)
+	imagefile := filepath.Join(config.DocumentRoot, "diaries/pages", diary, filename)
 	_, err = os.Stat(imagefile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not stat image file\n")
 		fmt.Fprintf(os.Stderr, "    image file: %s\n", imagefile)
-		fmt.Fprintf(os.Stderr, "    config.Prefix: %s\n", config.Prefix)
+		fmt.Fprintf(os.Stderr, "    config.DocumentRoot: %s\n", config.DocumentRoot)
+		fmt.Fprintf(os.Stderr, "    'diaries/pages': %s\n", "diaries/pages")
 		fmt.Fprintf(os.Stderr, "    diary: %s\n", diary)
 		fmt.Fprintf(os.Stderr, "    filename: %s\n", filename)
 	}
 
-	prefixDirectory := filepath.Dir(imagefile)
+	imageDirectory := filepath.Dir(imagefile)
 
-	children, err := ioutil.ReadDir(prefixDirectory)
+	children, err := ioutil.ReadDir(imageDirectory)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, err.Error()+"\n")
 		os.Exit(1)
@@ -143,7 +144,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "file not found: %s\n", filename)
 	}
 
-	cgi := filepath.Join(config.Prefix, "page")
+	cgi := config.DocumentRoot + "/diaries/pages/page"
 	_, err = os.Stat(cgi)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not stat cgi file: %s\n", cgi)
@@ -155,7 +156,7 @@ func main() {
 		previousURL := cgi + "?diary=" + diary + "&image=" + prev.Name()
 		previousHTML = " <div class=\"center-left\">" +
 			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"" + config.Prefix + "/images/previous.png\" >" +
+			"<img src=\"" + config.DocumentRoot + "/diaries/pages/images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -166,7 +167,7 @@ func main() {
 		nextURL := cgi + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = " <div class=\"center-right\">" +
 			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"" + config.Prefix + "/images/next.png\" >" +
+			"<img src=\"" + config.DocumentRoot + "/diaries/pages/images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}

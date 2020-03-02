@@ -12,19 +12,19 @@ import (
 
 // Config structure
 type Config struct {
-	Prefix string `json:"prefix"`
+	DocumentRoot string `json:"documentRoot"`
 }
 
 // New creates a config object
 func New() *Config {
 	c := new(Config)
 
-	c.Prefix = "/var/www/"
+	c.DocumentRoot = "/var/www/"
 
 	configfile := "/etc/page/page.json"
 
 	if runtime.GOOS == "windows" {
-		c.Prefix = "C:/temp"
+		c.DocumentRoot = "C:/temp"
 		configfile = "C:/temp/page.json"
 	}
 
