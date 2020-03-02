@@ -13,6 +13,7 @@ import (
 // Config structure
 type Config struct {
 	DocumentRoot string `json:"documentRoot"`
+	CgiProgram   string `json:"cgiProgram"`
 }
 
 // New creates a config object

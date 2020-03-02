@@ -9,9 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rsmaxwell/page/internal/version"
-
 	"github.com/rsmaxwell/page/internal/config"
+	"github.com/rsmaxwell/page/internal/version"
 )
 
 func contains(s []string, e string) bool {
@@ -156,7 +155,7 @@ func main() {
 		previousURL := cgi + "?diary=" + diary + "&image=" + prev.Name()
 		previousHTML = " <div class=\"center-left\">" +
 			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"" + config.DocumentRoot + "/diaries/pages/images/previous.png\" >" +
+			"<img src=\"/diaries/images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -167,7 +166,7 @@ func main() {
 		nextURL := cgi + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = " <div class=\"center-right\">" +
 			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"" + config.DocumentRoot + "/diaries/pages/images/next.png\" >" +
+			"<img src=\"/diaries/images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -187,7 +186,7 @@ func main() {
 		"<html> \n" +
 		"<head> \n" +
 		"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> \n" +
-		"<link rel=\"stylesheet\" type=\"text/css\" href=\"../css/diary.css\"> \n" +
+		"<link rel=\"stylesheet\" type=\"text/css\" href=\"/diaries/css/diary.css\"> \n" +
 		"</head> \n" +
 		"<body> \n" +
 		"<div class=\"imgbox\"> \n" +
