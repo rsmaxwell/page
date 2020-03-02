@@ -149,7 +149,7 @@ func main() {
 		previousURL := config.CgiProgram + "?diary=" + diary + "&image=" + prev.Name()
 		previousHTML = " <div class=\"center-left\">" +
 			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/images/previous.png\" >" +
+			"<img src=\"" + config.DiariesRoot + "/controls/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -160,7 +160,7 @@ func main() {
 		nextURL := config.CgiProgram + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = " <div class=\"center-right\">" +
 			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/images/next.png\" >" +
+			"<img src=\"" + config.DiariesRoot + "/controls/next.png\" >" +
 			"</a>" +
 			"</div> \n"
 	}
@@ -175,7 +175,7 @@ func main() {
 		zoomHTML = " <div class=\"top-center\"><img src=\"images/minus.png\"></div> \n"
 	} else {
 		imageHTML = " <img src=\"" + imageRef + "\" > \n"
-		zoomHTML = " <div class=\"top-center\"><img src=\"images/plus.png\"></div> \n"
+		zoomHTML = " <div class=\"top-center\"><img src=\"controls/plus.png\"></div> \n"
 	}
 
 	// Write out the html
