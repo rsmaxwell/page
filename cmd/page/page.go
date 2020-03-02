@@ -145,22 +145,22 @@ func main() {
 	if foundIndex > 0 {
 		prev := filelist[foundIndex-1]
 		previousURL := config.CgiProgram + "?diary=" + diary + "&image=" + prev.Name()
-		previousHTML = " <div class=\"center-left\">" +
-			"<a href=\"" + previousURL + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/controls/previous.png\" >" +
-			"</a>" +
-			"</div> \n"
+		previousHTML = "  <div class=\"center-left\">\n" +
+			"    <a href=\"" + previousURL + "\">\n" +
+			"      <img src=\"" + config.DiariesRoot + "/controls/previous.png\">\n" +
+			"    </a>\n" +
+			"  </div>\n"
 	}
 
 	nextHTML := ""
 	if foundIndex < len(filelist) {
 		next := filelist[foundIndex+1]
 		nextURL := config.CgiProgram + "?diary=" + diary + "&image=" + next.Name()
-		nextHTML = " <div class=\"center-right\">" +
-			"<a href=\"" + nextURL + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/controls/next.png\" >" +
-			"</a>" +
-			"</div> \n"
+		nextHTML = "  <div class=\"center-right\">\n" +
+			"    <a href=\"" + nextURL + "\">" +
+			"      <img src=\"" + config.DiariesRoot + "/controls/next.png\">\n" +
+			"    </a>\n" +
+			"  </div>\n"
 	}
 
 	imageRef := config.DiariesRoot + "/pages/" + diary + "/" + filename
@@ -170,19 +170,19 @@ func main() {
 
 	thisURL := config.CgiProgram + "?diary=" + diary + "&image=" + filename
 	if zoom == "scale" {
-		imageHTML = "<img src=\"" + imageRef + "\" class=\"center-fit\" > \n"
-		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "&zoom=full" + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/controls/plus.png\">" +
-			"</a>" +
-			"</div> \n"
+		imageHTML = "  <img src=\"" + imageRef + "\" class=\"center-fit\" > \n\n"
+		zoomHTML = "  <div class=\"top-center\">\n" +
+			"    <a href=\"" + thisURL + "&zoom=full" + "\">\n" +
+			"      <img src=\"" + config.DiariesRoot + "/controls/plus.png\">\n" +
+			"    </a>\n" +
+			"  </div>\n"
 	} else {
-		imageHTML = "<img src=\"" + imageRef + "\" > \n"
-		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "&zoom=scale" + "\">" +
-			"<img src=\"" + config.DiariesRoot + "/controls/minus.png\">" +
-			"</a>" +
-			"</div> \n"
+		imageHTML = "  <img src=\"" + imageRef + "\" > \n\n"
+		zoomHTML = "  <div class=\"top-center\">\n" +
+			"    <a href=\"" + thisURL + "&zoom=scale" + "\">\n" +
+			"      <img src=\"" + config.DiariesRoot + "/controls/minus.png\">\n" +
+			"    </a>\n" +
+			"  </div>\n"
 	}
 
 	fmt.Fprintf(os.Stderr, "thisURL: %s\n", thisURL)
