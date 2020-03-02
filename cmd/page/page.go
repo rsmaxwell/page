@@ -39,7 +39,8 @@ func main() {
 
 	u, err := url.Parse(requestURI)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not parse REQUEST_URI: %s\n", requestURI)
+		fmt.Fprintf(os.Stderr, "could not parse requestURI\n")
+		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
 	}
 
 	q := u.Query()
@@ -137,7 +138,10 @@ func main() {
 
 		_, err = os.Stat(previousFile)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "could not stat previous file: %s, prefix: %s, filename: %s", previousFile, config.Prefix, prev.Name())
+			fmt.Fprintf(os.Stderr, "Could not stat previous file\n")
+			fmt.Fprintf(os.Stderr, "    previousFile: %s\n", previousFile)
+			fmt.Fprintf(os.Stderr, "    config.Prefix: %s\n", config.Prefix)
+			fmt.Fprintf(os.Stderr, "    prev.Name(): %s\n", prev.Name())
 		}
 	}
 
@@ -153,7 +157,10 @@ func main() {
 
 		_, err = os.Stat(nextFile)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "could not stat next file: %s, prefix: %s, filename: %s", nextFile, config.Prefix, next.Name())
+			fmt.Fprintf(os.Stderr, "Could not stat previous file\n")
+			fmt.Fprintf(os.Stderr, "    nextFile: %s\n", nextFile)
+			fmt.Fprintf(os.Stderr, "    config.Prefix: %s\n", config.Prefix)
+			fmt.Fprintf(os.Stderr, "    next.Name(): %s\n", next.Name())
 		}
 	}
 
