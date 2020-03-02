@@ -30,7 +30,7 @@ func main() {
 	config := config.New()
 	fmt.Fprintf(os.Stderr, "config.Prefix:"+config.Prefix+"\n")
 
-	fmt.Fprintf(os.Stderr, "---[ page: %s ]------------", version.Version()+"\n")
+	fmt.Fprintf(os.Stderr, "---[ page: %s ]------------\n", version.Version())
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
@@ -39,7 +39,7 @@ func main() {
 
 	u, err := url.Parse(requestURI)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not parse REQUEST_URI: "+requestURI+"\n")
+		fmt.Fprintf(os.Stderr, "could not parse REQUEST_URI: %s\n", requestURI)
 	}
 
 	q := u.Query()
@@ -55,7 +55,7 @@ func main() {
 			zoom = value
 		}
 	} else {
-		fmt.Fprintf(os.Stderr, "too many zooms: "+strings.Join(zooms, ",")+"\n")
+		fmt.Fprintf(os.Stderr, "too many zooms: %s\n", strings.Join(zooms, ","))
 	}
 
 	files := q["image"]
@@ -63,7 +63,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "no files: "+requestURI+"\n")
 		os.Exit(1)
 	} else if len(files) > 1 {
-		fmt.Fprintf(os.Stderr, "too many files: "+strings.Join(files, ",")+"\n")
+		fmt.Fprintf(os.Stderr, "too many files: %s\n", strings.Join(files, ","))
 	}
 
 	filename := files[0]
@@ -71,7 +71,7 @@ func main() {
 	imagefile := filepath.Join(config.Prefix, filename)
 	_, err = os.Stat(imagefile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not stat file: "+imagefile+", prefix: "+config.Prefix+", filename: "+filename+"\n")
+		fmt.Fprintf(os.Stderr, "could not stat file: %s, prefix: %s, filename: %s", imagefile, config.Prefix, filename)
 	}
 
 	prefixDirectory := filepath.Dir(imagefile)
@@ -104,7 +104,7 @@ func main() {
 	}
 
 	if found < 0 {
-		fmt.Fprintf(os.Stderr, "file not found: "+filename+"\n")
+		fmt.Fprintf(os.Stderr, "file not found: %s\n", filename)
 	}
 
 	previousButton := ""
@@ -116,6 +116,11 @@ func main() {
 			"<img src=\"images/previous.png\" >" +
 			"</a>" +
 			"</div> \n"
+
+		_, err = os.Stat(previousFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "could not stat previous file: %s, prefix: %s, filename: %s", previousFile, config.Prefix, prev.Name())
+		}
 	}
 
 	nextButton := ""
@@ -127,6 +132,11 @@ func main() {
 			"<img src=\"images/next.png\" >" +
 			"</a>" +
 			"</div> \n"
+
+		_, err = os.Stat(nextFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "could not stat next file: %s, prefix: %s, filename: %s", nextFile, config.Prefix, next.Name())
+		}
 	}
 
 	zoomButton := ""
@@ -136,7 +146,7 @@ func main() {
 		image = " <img src=\"" + imagefile + "\" class=\"center-fit\" > \n"
 	} else {
 		zoomButton = " <div class=\"top-center\"><img src=\"images/plus.png\"></div> \n"
-		image = " <img src=\"" + imagefile + "\" class=\"center-fit\" > \n"
+		image = " <img src=\"" + imagefile + "\" > \n"
 	}
 
 	// Write out the html
