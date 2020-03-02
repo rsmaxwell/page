@@ -174,13 +174,13 @@ func main() {
 	if zoom == "scale" {
 		imageHTML = "<img src=\"" + imageRef + "\" class=\"center-fit\" > \n"
 		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "?zoom=scale" + "\">" +
+			"<a href=\"" + thisURL + "?zoom=full" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/plus.png\">" +
 			"</div> \n"
 	} else {
 		imageHTML = "<img src=\"" + imageRef + "\" > \n"
 		zoomHTML = "<div class=\"top-center\">" +
-			"<a href=\"" + thisURL + "?zoom=full" + "\">" +
+			"<a href=\"" + thisURL + "?zoom=scale" + "\">" +
 			"<img src=\"" + config.DiariesRoot + "/controls/minus.png\">" +
 			"</div> \n"
 	}
