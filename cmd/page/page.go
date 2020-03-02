@@ -149,7 +149,7 @@ func main() {
 			"    <a href=\"" + previousURL + "\">\n" +
 			"      <img src=\"" + config.DiariesRoot + "/controls/previous.png\">\n" +
 			"    </a>\n" +
-			"  </div>\n"
+			"  </div>\n\n"
 	}
 
 	nextHTML := ""
@@ -157,10 +157,10 @@ func main() {
 		next := filelist[foundIndex+1]
 		nextURL := config.CgiProgram + "?diary=" + diary + "&image=" + next.Name()
 		nextHTML = "  <div class=\"center-right\">\n" +
-			"    <a href=\"" + nextURL + "\">" +
+			"    <a href=\"" + nextURL + "\">\n" +
 			"      <img src=\"" + config.DiariesRoot + "/controls/next.png\">\n" +
 			"    </a>\n" +
-			"  </div>\n"
+			"  </div>\n\n"
 	}
 
 	imageRef := config.DiariesRoot + "/pages/" + diary + "/" + filename
@@ -175,14 +175,14 @@ func main() {
 			"    <a href=\"" + thisURL + "&zoom=full" + "\">\n" +
 			"      <img src=\"" + config.DiariesRoot + "/controls/plus.png\">\n" +
 			"    </a>\n" +
-			"  </div>\n"
+			"  </div>\n\n"
 	} else {
 		imageHTML = "  <img src=\"" + imageRef + "\" > \n\n"
 		zoomHTML = "  <div class=\"top-center\">\n" +
 			"    <a href=\"" + thisURL + "&zoom=scale" + "\">\n" +
 			"      <img src=\"" + config.DiariesRoot + "/controls/minus.png\">\n" +
 			"    </a>\n" +
-			"  </div>\n"
+			"  </div>\n\n"
 	}
 
 	fmt.Fprintf(os.Stderr, "thisURL: %s\n", thisURL)
