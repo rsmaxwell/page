@@ -12,12 +12,6 @@ import (
 	"github.com/rsmaxwell/page/internal/version"
 
 	"github.com/rsmaxwell/page/internal/config"
-	"github.com/rsmaxwell/page/internal/debug"
-)
-
-var (
-	pkg          = debug.NewPackage("main")
-	functionMain = debug.NewFunction(pkg, "main")
 )
 
 func contains(s []string, e string) bool {
@@ -30,25 +24,22 @@ func contains(s []string, e string) bool {
 }
 
 func main() {
-	f := functionMain
 
 	fmt.Printf("Content-type: text/html\n\n")
-	fmt.Fprintf(os.Stderr, "*** PAGE ************")
 
 	config := config.New()
-	fmt.Fprintf(os.Stderr, "*** PAGE: config.Prefix:"+config.Prefix+" ************")
+	fmt.Fprintf(os.Stderr, "config.Prefix:"+config.Prefix+"\n")
 
-	f.Infof(fmt.Sprintf("---[ page: %s ]------------", version.Version()))
+	fmt.Fprintf(os.Stderr, "---[ page: %s ]------------", version.Version()+"\n")
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
-		f.DebugInfo("help! info")
-		f.Fatalf("environment variable 'REQUEST_URI' not found")
+		fmt.Fprintf(os.Stderr, "environment variable 'REQUEST_URI' not found\n")
 	}
 
 	u, err := url.Parse(requestURI)
 	if err != nil {
-		f.Fatalf("could not parse REQUEST_URI: " + requestURI)
+		fmt.Fprintf(os.Stderr, "could not parse REQUEST_URI: "+requestURI+"\n")
 	}
 
 	q := u.Query()
@@ -64,15 +55,15 @@ func main() {
 			zoom = value
 		}
 	} else {
-		f.Fatalf("too many zooms: " + strings.Join(zooms, ","))
+		fmt.Fprintf(os.Stderr, "too many zooms: "+strings.Join(zooms, ",")+"\n")
 	}
 
 	files := q["image"]
 	if len(files) < 1 {
-		f.Fatalf("no files: " + requestURI)
+		fmt.Fprintf(os.Stderr, "no files: "+requestURI+"\n")
 		os.Exit(1)
 	} else if len(files) > 1 {
-		f.Fatalf("too many files: " + strings.Join(files, ","))
+		fmt.Fprintf(os.Stderr, "too many files: "+strings.Join(files, ",")+"\n")
 	}
 
 	filename := files[0]
@@ -80,14 +71,15 @@ func main() {
 	imagefile := filepath.Join(config.Prefix, filename)
 	_, err = os.Stat(imagefile)
 	if err != nil {
-		f.Fatalf("could not stat file: " + imagefile + ", prefix: " + config.Prefix + ", filename: " + filename)
+		fmt.Fprintf(os.Stderr, "could not stat file: "+imagefile+", prefix: "+config.Prefix+", filename: "+filename+"\n")
 	}
 
 	prefixDirectory := filepath.Dir(imagefile)
 
 	children, err := ioutil.ReadDir(prefixDirectory)
 	if err != nil {
-		f.Fatalf(err.Error())
+		fmt.Fprintf(os.Stderr, err.Error()+"\n")
+		os.Exit(1)
 	}
 
 	// list the files with the same parent, sorted by name
@@ -112,7 +104,7 @@ func main() {
 	}
 
 	if found < 0 {
-		f.Fatalf("file not found: " + filename)
+		fmt.Fprintf(os.Stderr, "file not found: "+filename+"\n")
 	}
 
 	previousButton := ""
