@@ -33,8 +33,10 @@ func main() {
 	f := functionMain
 
 	fmt.Printf("Content-type: text/html\n\n")
+	fmt.Fprintf(os.Stderr, "*** PAGE ************")
 
 	config := config.New()
+	fmt.Fprintf(os.Stderr, "*** PAGE: config.Prefix:"+config.Prefix+" ************")
 
 	f.Infof(fmt.Sprintf("---[ page: %s ]------------", version.Version()))
 
