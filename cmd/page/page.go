@@ -33,7 +33,7 @@ func main() {
 
 	requestURI, exists := os.LookupEnv("REQUEST_URI")
 	if !exists {
-		fmt.Fprintf(os.Stderr, "environment variable 'REQUEST_URI' not foundIndex\n")
+		fmt.Fprintf(os.Stderr, "environment variable 'REQUEST_URI' not found\n")
 	}
 
 	u, err := url.Parse(requestURI)
