@@ -126,10 +126,10 @@ func main() {
 	previousHTML := ""
 	if foundIndex > 0 {
 		prev := filelist[foundIndex-1]
-		previousURL := "?diary=" + diary + "&image=" + prev.Name()
+		previousURL := config.diariesRoot + "/" + "pages" + diary + "&image=" + prev.Name()
 		previousHTML = "    <div class=\"center-left\"> \n" +
 			"        <a href=\"" + previousURL + " \"> \n" +
-			"            <img src=\"controls/previous.png\"> \n" +
+			"            <img src=\"" + config.diariesRoot + "/controls/previous.png\"> \n" +
 			"        </a>\n" +
 			"    </div>\n\n"
 	}
@@ -137,15 +137,15 @@ func main() {
 	nextHTML := ""
 	if foundIndex < len(filelist) {
 		next := filelist[foundIndex+1]
-		nextURL := "?diary=" + diary + "&image=" + next.Name()
+		nextURL := config.diariesRoot + "/" + "pages" + diary + "&image=" + next.Name()
 		nextHTML = "    <div class=\"center-right\">\n" +
 			"        <a href=\"" + nextURL + " \"> \n" +
-			"            <img src=\"controls/next.png\"> \n" +
+			"            <img src=\"" + config.diariesRoot + "/controls/next.png\"> \n" +
 			"        </a> \n" +
 			"    </div> \n\n"
 	}
 
-	imageRef := "pages/" + diary + "/" + filename
+	imageRef := config.diariesRoot + "/" + diary + "/" + filename
 
 	var imageHTML string
 
