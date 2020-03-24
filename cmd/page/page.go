@@ -159,7 +159,7 @@ func main() {
 		"<meta charset=\"utf-8\"> \n" +
 		"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> \n" +
 		"\n" +
-		"    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/page.css\"> \n" +
+		"    <link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.DiariesRoot + "/css/page.css\"> \n" +
 		"\n" +
 		"    <title>Pages</title> \n" +
 		"</head> \n" +
