@@ -49,24 +49,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "    query: %+v\n", q)
 	}
 
-	zooms := q["zoom"]
-	zoom := "scale"
-	if len(zooms) < 1 {
-		zoom = "scale"
-	} else if len(zooms) == 1 {
-		value := zooms[0]
-		validZooms := []string{"scale", "full"}
-		if contains(validZooms, strings.ToLower(value)) {
-			zoom = value
-		}
-	} else {
-		fmt.Fprintf(os.Stderr, "too many 'zooms' keys in requestURI\n")
-		fmt.Fprintf(os.Stderr, "    requestURI: %s\n", requestURI)
-		for i, z := range zooms {
-			fmt.Fprintf(os.Stderr, "    zoom[%d]: %s\n", i, z)
-		}
-	}
-
 	diaries := q["diary"]
 	if len(diaries) < 1 {
 		fmt.Fprintf(os.Stderr, "Missing 'diary' key in requestURI query\n")
@@ -144,65 +126,57 @@ func main() {
 	previousHTML := ""
 	if foundIndex > 0 {
 		prev := filelist[foundIndex-1]
-		previousURL := config.CgiProgram + "?diary=" + diary + "&image=" + prev.Name()
-		previousHTML = "  <div class=\"center-left\">\n" +
-			"    <a href=\"" + previousURL + "\">\n" +
-			"      <img src=\"" + config.DiariesRoot + "/controls/previous.png\">\n" +
-			"    </a>\n" +
-			"  </div>\n\n"
+		previousURL := "?diary=" + diary + "&image=" + prev.Name()
+		previousHTML = "    <div class=\"center-left\"> \n" +
+			"        <a href=\"" + previousURL + " \"> \n" +
+			"            <img src=\"controls/previous.png\"> \n" +
+			"        </a>\n" +
+			"    </div>\n\n"
 	}
 
 	nextHTML := ""
 	if foundIndex < len(filelist) {
 		next := filelist[foundIndex+1]
-		nextURL := config.CgiProgram + "?diary=" + diary + "&image=" + next.Name()
-		nextHTML = "  <div class=\"center-right\">\n" +
-			"    <a href=\"" + nextURL + "\">\n" +
-			"      <img src=\"" + config.DiariesRoot + "/controls/next.png\">\n" +
-			"    </a>\n" +
-			"  </div>\n\n"
+		nextURL := "?diary=" + diary + "&image=" + next.Name()
+		nextHTML = "    <div class=\"center-right\">\n" +
+			"        <a href=\"" + nextURL + " \"> \n" +
+			"            <img src=\"controls/next.png\"> \n" +
+			"        </a> \n" +
+			"    </div> \n\n"
 	}
 
-	imageRef := config.DiariesRoot + "/pages/" + diary + "/" + filename
+	imageRef := "pages/" + diary + "/" + filename
 
 	var imageHTML string
-	var zoomHTML string
 
 	thisURL := config.CgiProgram + "?diary=" + diary + "&image=" + filename
-	if zoom == "scale" {
-		imageHTML = "  <img src=\"" + imageRef + "\" class=\"center-fit\" > \n\n"
-		zoomHTML = "  <div class=\"top-center\">\n" +
-			"    <a href=\"" + thisURL + "&zoom=full" + "\">\n" +
-			"      <img src=\"" + config.DiariesRoot + "/controls/plus.png\">\n" +
-			"    </a>\n" +
-			"  </div>\n\n"
-	} else {
-		imageHTML = "  <img src=\"" + imageRef + "\" > \n\n"
-		zoomHTML = "  <div class=\"top-center\">\n" +
-			"    <a href=\"" + thisURL + "&zoom=scale" + "\">\n" +
-			"      <img src=\"" + config.DiariesRoot + "/controls/minus.png\">\n" +
-			"    </a>\n" +
-			"  </div>\n\n"
-	}
+	imageHTML = "  <img class=\"zoom\" src=\"" + imageRef + "\" > \n\n"
 
 	fmt.Fprintf(os.Stderr, "thisURL: %s\n", thisURL)
 	fmt.Fprintf(os.Stderr, "imageHTML: %s\n", imageHTML)
-	fmt.Fprintf(os.Stderr, "zoomHTML: %s\n", zoomHTML)
 
 	// Write out the html
 	content := "<!DOCTYPE html> \n" +
 		"<html> \n" +
 		"<head> \n" +
+		"<meta charset=\"utf-8\"> \n" +
 		"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> \n" +
-		"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.DiariesRoot + "/css/page.css\"> \n" +
+		"\n" +
+		"    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/page.css\"> \n" +
+		"\n" +
+		"    <title>Pages</title> \n" +
 		"</head> \n" +
 		"<body> \n" +
 		"<div class=\"imgbox\"> \n" +
 		imageHTML +
 		previousHTML +
-		zoomHTML +
 		nextHTML +
 		"</div> \n" +
+		"\n" +
+		"    <script src=\"scripts/wheelzoom.js\"></script> \n" +
+		"    <script> \n" +
+		"	    wheelzoom(document.querySelector('img.zoom')); \n" +
+		"    </script> \n" +
 		"</body> \n" +
 		"</html> \n"
 
