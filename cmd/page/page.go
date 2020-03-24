@@ -146,11 +146,8 @@ func main() {
 	}
 
 	imageRef := config.DiariesRoot + "/pages/" + diary + "/" + filename
-
-	var imageHTML string
-
 	thisURL := config.CgiProgram + "?diary=" + diary + "&image=" + filename
-	imageHTML = "  <img class=\"zoom\" src=\"" + imageRef + "\" > \n\n"
+	imageHTML := "  <img class=\"zoom\" src=\"" + imageRef + "\" > \n\n"
 
 	fmt.Fprintf(os.Stderr, "thisURL: %s\n", thisURL)
 	fmt.Fprintf(os.Stderr, "imageHTML: %s\n", imageHTML)
