@@ -170,7 +170,7 @@ func main() {
 		nextHTML +
 		"</div> \n" +
 		"\n" +
-		"    <script src=\"scripts/wheelzoom.js\"></script> \n" +
+		"    <script src=\"" + config.DiariesRoot + "/scripts/wheelzoom.js\"></script> \n" +
 		"    <script> \n" +
 		"	    wheelzoom(document.querySelector('img.zoom')); \n" +
 		"    </script> \n" +
