@@ -27,9 +27,6 @@ ext {
     }
             
     mainName = "page"
-    internalTestName = "internalTest"
-    stagingTestName = "stagingTest"
-    releasesTestName = "releasesTest"
 
     groupID = 'com.rsmaxwell.diary'
     artifactID = "${mainName}-${GOARCH}-${GOOS}"
@@ -85,15 +82,6 @@ task build()  {
             commandLine 'go', 'build', '-o', "./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${mainName}"
         }
         exec {
-            commandLine 'go', 'build', '-o', "./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${internalTestName}"
-        }
-        exec {
-            commandLine 'go', 'build', '-o', "./build/${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${stagingTestName}"
-        }
-        exec {
-            commandLine 'go', 'build', '-o', "./build/${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}", "github.com/rsmaxwell/page/cmd/${releasesTestName}"
-        }
-        exec {
             commandLine 'go', 'test', './...'
         }
     }
@@ -123,33 +111,6 @@ task zipMain(type: Zip) {
     destinationDir(file('./build'))
 }
 
-task zipInternalTest(type: Zip) {
-    from('build') {
-        include "${internalTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}"
-        include 'version.json'
-    }
-    archiveName "${internalTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}"
-    destinationDir(file('./build'))
-}
-
-task zipStagingTest(type: Zip) {
-    from('build') {
-        include "${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}"
-        include 'version.json'
-    }
-    archiveName "${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}"
-    destinationDir(file('./build'))
-}
-
-task zipReleasesTest(type: Zip) {
-    from('build') {
-        include "${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}${GOEXE}"
-        include 'version.json'
-    }
-    archiveName "${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}"
-    destinationDir(file('./build'))
-}
-
 
 
 
@@ -166,21 +127,12 @@ publishing {
             version myVersion
 
             artifact("./build/${mainName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") 
-            artifact("./build/${internalTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") {
-                    classifier = project.ext.internalTestClassifier
-            }
-            artifact("./build/${stagingTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") {
-                    classifier = project.ext.stagingTestClassifier
-            }
-            artifact("./build/${releasesTestName}-${GOARCH}-${GOOS}-${myVersion}.${packaging}") {
-                    classifier = project.ext.releasesTestClassifier
-            }
         }
     }
     repositories {
         maven {
-            name 'build'
-            url "${repoUrl}/build"
+            name 'releases'
+            url "${repoUrl}/releases"
             credentials {
                 username = repoUsername
                 password = repoPassword
