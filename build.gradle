@@ -97,9 +97,6 @@ task clean() {
 
 task zip {
     dependsOn('zipMain')
-    dependsOn('zipInternalTest')
-    dependsOn('zipStagingTest')
-    dependsOn('zipReleasesTest')
 }
 
 task zipMain(type: Zip) {
